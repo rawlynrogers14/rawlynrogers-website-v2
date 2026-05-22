@@ -35,3 +35,6 @@ build/
 # Environment Variables / Secrets
 .env
 .env.*
+
+# local uploads
+uploads/
