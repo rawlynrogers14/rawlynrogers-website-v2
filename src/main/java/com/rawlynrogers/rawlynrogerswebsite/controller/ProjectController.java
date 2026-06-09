@@ -26,19 +26,4 @@ public class ProjectController {
         return projectService.getProjectById(id);
     }
 
-    @PostMapping
-    public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO) {
-        return projectService.createProject(projectDTO);
-    }
-
-    @PutMapping("/{id}")
-    public ProjectDTO updateProject(@PathVariable Long id,
-                                    @RequestBody ProjectDTO updatedProjectDTO) {
-        return projectService.updateProject(id, updatedProjectDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
-        projectService.deleteProject(id);
-    }
 }

@@ -24,17 +24,4 @@ public class MediaController {
         return ResponseEntity.ok(mediaService.getAllMedia());
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<MediaDTO> uploadMedia(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "description", required = false) String description) {
-
-        return ResponseEntity.ok(mediaService.uploadMedia(file, description));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
-        mediaService.deleteMedia(id);
-        return ResponseEntity.noContent().build();
-    }
 }

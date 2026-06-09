@@ -25,20 +25,4 @@ public class ContactController {
     public ContactDTO getContactById(@PathVariable Long id) {
         return contactService.getContactById(id);
     }
-
-    @PostMapping
-    public ContactDTO createContact(@RequestBody ContactDTO contactDTO) {
-        return contactService.createContact(contactDTO);
-    }
-
-    @PutMapping("/{id}")
-    public ContactDTO updateContact(@PathVariable Long id,
-                                    @RequestBody ContactDTO updatedContactDTO) {
-        return contactService.updateContact(id, updatedContactDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteContact(@PathVariable Long id) {
-        contactService.deleteContact(id);
-    }
 }
