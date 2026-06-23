@@ -38,3 +38,12 @@ build/
 
 # local uploads
 uploads/
+
+# Resume/CV Documents
+frontend/public/resume-short.pdf
+frontend/public/cv-long.pdf
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
