@@ -1,65 +1,87 @@
-import { useState } from "react";
-
-const projects = [
-  {
-    title: "Portfolio Website",
-    date: "2026",
-    contributors: "Rawlyn Rogers",
-    about:
-      "A full-stack portfolio website built with React, Spring Boot, PostgreSQL, and AWS.",
-    design:
-      "Designed with a React frontend, REST API backend, PostgreSQL database, authentication, media uploads, and admin controls.",
-    results:
-      "Created a scalable personal website to showcase projects, resume documents, and professional experience.",
-  },
-  {
-    title: "Hand Tracking in VR Cockpits",
-    date: "2025",
-    contributors: "Senior Design Team",
-    about:
-      "A virtual reality cockpit interaction system using hand tracking and sensor-based input.",
-    design:
-      "Used Python, C#, Unity, camera-based tracking, and sensor integration to improve VR interaction accuracy.",
-    results:
-      "Improved hand interaction testing and demonstrated a working prototype for flight-training environments.",
-  },
-];
+import { useEffect, useState } from "react";
+import { getProjects } from "../api/projectApi";
+import "./Projects.css";
 
 function Projects() {
-  const [openProject, setOpenProject] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [openProjectId, setOpenProjectId] = useState(null);
+
+  useEffect(() => {
+    getProjects()
+      .then((data) => {
+        const sortedProjects = [...data].sort((a, b) => {
+          return new Date(b.projectDate) - new Date(a.projectDate);
+        });
+
+        setProjects(sortedProjects);
+      })
+      .catch((error) => {
+        console.error("Failed to load projects:", error);
+      });
+  }, []);
+
+  function toggleProject(projectId) {
+    setOpenProjectId(openProjectId === projectId ? null : projectId);
+  }
 
   return (
     <section className="page">
       <h1>Projects</h1>
 
-      {projects.map((project, index) => (
-        <div className="project-card" key={index}>
+      {projects.map((project) => (
+        <div className="project-card" key={project.id}>
           <button
-            className="project-title"
-            onClick={() =>
-              setOpenProject(openProject === index ? null : index)
-            }
-          >
-            {project.title}
+                className="project-title"
+                onClick={() => toggleProject(project.id)}
+            >
+                <span className="project-title-text">
+                    {project.title}
+                </span>
+
+                <span className="project-title-date">
+                    {project.projectDate}
+                </span>
           </button>
 
-          {openProject === index && (
-            <div className="project-details">
-              <p><strong>Date:</strong> {project.date}</p>
-              <p><strong>Contributors:</strong> {project.contributors}</p>
+          {openProjectId === project.id && (
+            <div className="project-expanded">
 
-              <h3>About the Project</h3>
-              <p>{project.about}</p>
+                <div className="project-info">
 
-              <h3>Project Design</h3>
-              <p>{project.design}</p>
+                    <div className="project-section">
+                        <h3>Description</h3>
+                        <p>{project.description}</p>
+                    </div>
 
-              <h3>Results</h3>
-              <p>{project.results}</p>
+                    <div className="project-section">
+                        <h3>Tech Stack</h3>
+                        <p>{project.technologies}</p>
+                    </div>
 
-              <div className="slideshow-placeholder">
-                Project slideshow pictures will go here.
-              </div>
+                    {project.githubLink && (
+                        <div className="project-section">
+                            <h3>GitHub</h3>
+
+                            <a
+                                href={project.githubLink}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                View Repository
+                            </a>
+                        </div>
+                    )}
+
+                </div>
+
+                <div className="project-slideshow">
+
+                    <div className="slideshow-box">
+                        Images Coming Soon
+                    </div>
+
+                </div>
+
             </div>
           )}
         </div>

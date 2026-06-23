@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getContact } from "../api/contactApi";
+import "./Navbar.css";
 
 function Navbar() {
   const [contact, setContact] = useState(null);
@@ -24,9 +25,11 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <h2>
-        {contact ? `${contact.firstName} ${contact.lastName}` : "Rawlyn Rogers"}
-      </h2>
+      <Link to="/" className="navbar-brand">
+        {contact
+          ? `${contact.firstName} ${contact.lastName}`
+          : "Rawlyn Rogers"}
+      </Link>
 
       <div className="nav-links">
         <Link to="/">Home</Link>

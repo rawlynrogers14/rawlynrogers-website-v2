@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getContact } from "../api/contactApi";
+import "./Home.css";
 
 function Home() {
   const [contact, setContact] = useState(null);
@@ -7,41 +9,41 @@ function Home() {
 
   useEffect(() => {
     getContact()
-      .then((data) => {
-        setContact(data);
-      })
-      .catch((error) => {
-        console.error("Failed to load contact:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then((data) => setContact(data))
+      .catch((error) => console.error("Failed to load contact:", error))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
     return (
-      <section className="page">
+      <section className="page home-container">
         <p>Loading about me...</p>
       </section>
     );
   }
 
   return (
-    <section className="page">
-      <h1>About Me</h1>
+    <section className="page home-container">
+      <div className="about-section">
+        {contact?.profileImageUrl && (
+          <img
+            src={`http://localhost:8080${contact.profileImageUrl}`}
+            alt={`${contact.firstName} ${contact.lastName}`}
+            className="profile-image"
+          />
+        )}
 
-      {contact?.profileImageUrl && (
-        <img
-          src={`http://localhost:8080${contact.profileImageUrl}`}
-          alt={`${contact.firstName} ${contact.lastName}`}
-          className="profile-image"
-        />
-      )}
+        <div className="about-content">
+          <h1>About Me</h1>
+          <p>{contact?.aboutMe}</p>
+        </div>
+      </div>
 
-      <p>{contact?.aboutMe}</p>
+      <div className="slideshow-section">
 
-      <div className="slideshow-placeholder">
-        Slideshow of personal/professional pictures will go here.
+        <div className="slideshow-placeholder">
+          Future slideshow component
+        </div>
       </div>
     </section>
   );
