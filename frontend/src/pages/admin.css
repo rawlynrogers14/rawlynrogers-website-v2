@@ -1,0 +1,410 @@
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-page, 2rem);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 40px rgba(17, 24, 39, 0.12);
+}
+
+.admin-login-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.admin-login-eyebrow {
+  margin-bottom: 0.4rem;
+  color: var(--color-secondary);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-login-header h1 {
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.admin-login-header p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-field input {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.admin-field input:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.admin-password-wrapper {
+  position: relative;
+}
+
+.admin-password-wrapper input {
+  padding-right: 3rem;
+}
+
+.admin-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.admin-login-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-secondary);
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.admin-login-button:hover {
+  background: var(--color-hover);
+  transform: translateY(-1px);
+}
+
+.admin-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  font-weight: 600;
+  text-align: center;
+}
+
+.admin-dashboard-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.admin-top-bar {
+  min-height: var(--navbar-height);
+  padding: 0 2rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-top-bar h1 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 1.6rem;
+}
+
+.admin-logout-button,
+.admin-primary-button,
+.admin-secondary-button,
+.admin-danger-button {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast),
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.admin-logout-button,
+.admin-primary-button {
+  background: var(--color-secondary);
+  color: #ffffff;
+}
+
+.admin-logout-button:hover,
+.admin-primary-button:hover {
+  background: var(--color-hover);
+  transform: translateY(-1px);
+}
+
+.admin-secondary-button {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.admin-danger-button {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.admin-control-bar {
+  padding: 1.25rem 2rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-control-bar label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 340px;
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.admin-control-bar select {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.entity-manager {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.entity-manager-header {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.entity-manager-header h2 {
+  margin-bottom: 0.3rem;
+}
+
+.entity-manager-header p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.admin-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-record-row {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.admin-record-row:hover {
+  border-color: var(--color-secondary);
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.1);
+  transform: translateY(-1px);
+}
+
+.admin-record-row span {
+  font-weight: 700;
+}
+
+.admin-record-row small {
+  color: var(--color-muted);
+}
+
+.admin-empty {
+  color: var(--color-muted);
+}
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  background: rgba(17, 24, 39, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.admin-disclaimer-modal,
+.admin-edit-modal {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 25px 60px rgba(17, 24, 39, 0.25);
+}
+
+.admin-disclaimer-modal {
+  max-width: 480px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.admin-disclaimer-modal h2 {
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.admin-disclaimer-modal p {
+  color: var(--color-text);
+}
+
+.admin-disclaimer-modal button {
+  margin-top: 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 1rem;
+  background: var(--color-secondary);
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-edit-modal {
+  max-width: 850px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.admin-edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.admin-edit-header h2 {
+  margin: 0;
+}
+
+.admin-close-button {
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.admin-edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.admin-variable-name {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.admin-edit-field input,
+.admin-edit-field textarea {
+  width: fit-content;
+  min-width: 280px;
+  max-width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.admin-edit-field textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+}
+
+.admin-edit-field input:focus,
+.admin-edit-field textarea:focus,
+.admin-control-bar select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.admin-edit-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.admin-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  font-weight: 600;
+}
