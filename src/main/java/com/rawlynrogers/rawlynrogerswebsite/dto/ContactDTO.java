@@ -1,5 +1,8 @@
 package com.rawlynrogers.rawlynrogerswebsite.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactDTO {
 
     private Long id;
@@ -9,18 +12,31 @@ public class ContactDTO {
     private String email;
     private String githubLink;
     private String linkedinLink;
-    private String profileImageUrl;
-    private String resumePdfUrl;
-    private String cvPdfUrl;
+
+    private Long profileImageId;
+    private Long resumePdfId;
+    private Long cvPdfId;
+
     private String aboutMe;
+
+    private List<Long> slideshowIds = new ArrayList<>();
 
     public ContactDTO() {
     }
 
-    public ContactDTO(Long id, String firstName, String middleName, String lastName,
-                      String email, String githubLink, String linkedinLink,
-                      String profileImageUrl, String resumePdfUrl,
-                      String cvPdfUrl, String aboutMe) {
+    public ContactDTO(Long id,
+                      String firstName,
+                      String middleName,
+                      String lastName,
+                      String email,
+                      String githubLink,
+                      String linkedinLink,
+                      Long profileImageId,
+                      Long resumePdfId,
+                      Long cvPdfId,
+                      String aboutMe,
+                      List<Long> slideshowIds) {
+
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -28,10 +44,11 @@ public class ContactDTO {
         this.email = email;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
-        this.profileImageUrl = profileImageUrl;
-        this.resumePdfUrl = resumePdfUrl;
-        this.cvPdfUrl = cvPdfUrl;
+        this.profileImageId = profileImageId;
+        this.resumePdfId = resumePdfId;
+        this.cvPdfId = cvPdfId;
         this.aboutMe = aboutMe;
+        this.slideshowIds = slideshowIds;
     }
 
     public Long getId() { return id; }
@@ -41,10 +58,11 @@ public class ContactDTO {
     public String getEmail() { return email; }
     public String getGithubLink() { return githubLink; }
     public String getLinkedinLink() { return linkedinLink; }
-    public String getProfileImageUrl() { return profileImageUrl; }
-    public String getResumePdfUrl() { return resumePdfUrl; }
-    public String getCvPdfUrl() { return cvPdfUrl; }
+    public Long getProfileImageId() { return profileImageId; }
+    public Long getResumePdfId() { return resumePdfId; }
+    public Long getCvPdfId() { return cvPdfId; }
     public String getAboutMe() { return aboutMe; }
+    public List<Long> getSlideshowIds() { return slideshowIds; }
 
     public void setId(Long id) { this.id = id; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -53,8 +71,9 @@ public class ContactDTO {
     public void setEmail(String email) { this.email = email; }
     public void setGithubLink(String githubLink) { this.githubLink = githubLink; }
     public void setLinkedinLink(String linkedinLink) { this.linkedinLink = linkedinLink; }
-    public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
-    public void setResumePdfUrl(String resumePdfUrl) { this.resumePdfUrl = resumePdfUrl; }
-    public void setCvPdfUrl(String cvPdfUrl) { this.cvPdfUrl = cvPdfUrl; }
+    public void setProfileImageId(Long profileImageId) { this.profileImageId = profileImageId; }
+    public void setResumePdfId(Long resumePdfId) { this.resumePdfId = resumePdfId; }
+    public void setCvPdfId(Long cvPdfId) { this.cvPdfId = cvPdfId; }
     public void setAboutMe(String aboutMe) { this.aboutMe = aboutMe; }
+    public void setSlideshowIds(List<Long> slideshowIds) { this.slideshowIds = slideshowIds; }
 }

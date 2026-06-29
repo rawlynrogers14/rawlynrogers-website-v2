@@ -2,7 +2,13 @@ package com.rawlynrogers.rawlynrogerswebsite.service;
 
 import com.rawlynrogers.rawlynrogerswebsite.dto.ContactDTO;
 import com.rawlynrogers.rawlynrogerswebsite.entity.Contact;
+import com.rawlynrogers.rawlynrogerswebsite.entity.Media;
+import com.rawlynrogers.rawlynrogerswebsite.entity.Profile;
+import com.rawlynrogers.rawlynrogerswebsite.entity.Project;
+import com.rawlynrogers.rawlynrogerswebsite.repository.ProfileRepository;
+import com.rawlynrogers.rawlynrogerswebsite.repository.ProjectRepository;
 import com.rawlynrogers.rawlynrogerswebsite.repository.ContactRepository;
+import com.rawlynrogers.rawlynrogerswebsite.repository.MediaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +17,18 @@ import java.util.List;
 public class ContactServiceImpl implements ContactService {
 
     private final ContactRepository contactRepository;
+    private final MediaRepository mediaRepository;
+    private final ProfileRepository profileRepository;
+    private final ProjectRepository projectRepository;
 
-    public ContactServiceImpl(ContactRepository contactRepository) {
+    public ContactServiceImpl(ContactRepository contactRepository,
+                              MediaRepository mediaRepository,
+                              ProfileRepository profileRepository,
+                              ProjectRepository projectRepository) {
         this.contactRepository = contactRepository;
+        this.mediaRepository = mediaRepository;
+        this.profileRepository = profileRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -51,10 +66,18 @@ public class ContactServiceImpl implements ContactService {
         existingContact.setEmail(updatedContactDTO.getEmail());
         existingContact.setGithubLink(updatedContactDTO.getGithubLink());
         existingContact.setLinkedinLink(updatedContactDTO.getLinkedinLink());
-        existingContact.setProfileImageUrl(updatedContactDTO.getProfileImageUrl());
-        existingContact.setResumePdfUrl(updatedContactDTO.getResumePdfUrl());
-        existingContact.setCvPdfUrl(updatedContactDTO.getCvPdfUrl());
         existingContact.setAboutMe(updatedContactDTO.getAboutMe());
+
+        existingContact.setProfileImage(getMediaOrNull(updatedContactDTO.getProfileImageId()));
+        existingContact.setResumePdf(getMediaOrNull(updatedContactDTO.getResumePdfId()));
+        existingContact.setCvPdf(getMediaOrNull(updatedContactDTO.getCvPdfId()));
+
+        if (updatedContactDTO.getSlideshowIds() != null) {
+            List<Media> slideshow = mediaRepository.findAllById(updatedContactDTO.getSlideshowIds());
+            existingContact.setSlideshow(slideshow);
+        } else {
+            existingContact.getSlideshow().clear();
+        }
 
         Contact savedContact = contactRepository.save(existingContact);
 
@@ -66,10 +89,34 @@ public class ContactServiceImpl implements ContactService {
         Contact existingContact = contactRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
 
+        List<Profile> profiles = profileRepository.findAll();
+
+        for (Profile profile : profiles) {
+            if (profile.getContact() != null &&
+                    profile.getContact().getId().equals(id)) {
+                profile.setContact(null);
+            }
+        }
+
+        profileRepository.saveAll(profiles);
+
+        List<Project> projects = projectRepository.findAll();
+
+        for (Project project : projects) {
+            project.getContributors().remove(existingContact);
+        }
+
+        projectRepository.saveAll(projects);
+
         contactRepository.delete(existingContact);
     }
 
     private ContactDTO convertToDTO(Contact contact) {
+        List<Long> slideshowIds = contact.getSlideshow()
+                .stream()
+                .map(Media::getId)
+                .toList();
+
         return new ContactDTO(
                 contact.getId(),
                 contact.getFirstName(),
@@ -78,10 +125,11 @@ public class ContactServiceImpl implements ContactService {
                 contact.getEmail(),
                 contact.getGithubLink(),
                 contact.getLinkedinLink(),
-                contact.getProfileImageUrl(),
-                contact.getResumePdfUrl(),
-                contact.getCvPdfUrl(),
-                contact.getAboutMe()
+                contact.getProfileImage() != null ? contact.getProfileImage().getId() : null,
+                contact.getResumePdf() != null ? contact.getResumePdf().getId() : null,
+                contact.getCvPdf() != null ? contact.getCvPdf().getId() : null,
+                contact.getAboutMe(),
+                slideshowIds
         );
     }
 
@@ -94,11 +142,26 @@ public class ContactServiceImpl implements ContactService {
         contact.setEmail(contactDTO.getEmail());
         contact.setGithubLink(contactDTO.getGithubLink());
         contact.setLinkedinLink(contactDTO.getLinkedinLink());
-        contact.setProfileImageUrl(contactDTO.getProfileImageUrl());
-        contact.setResumePdfUrl(contactDTO.getResumePdfUrl());
-        contact.setCvPdfUrl(contactDTO.getCvPdfUrl());
         contact.setAboutMe(contactDTO.getAboutMe());
 
+        contact.setProfileImage(getMediaOrNull(contactDTO.getProfileImageId()));
+        contact.setResumePdf(getMediaOrNull(contactDTO.getResumePdfId()));
+        contact.setCvPdf(getMediaOrNull(contactDTO.getCvPdfId()));
+
+        if (contactDTO.getSlideshowIds() != null) {
+            List<Media> slideshow = mediaRepository.findAllById(contactDTO.getSlideshowIds());
+            contact.setSlideshow(slideshow);
+        }
+
         return contact;
+    }
+
+    private Media getMediaOrNull(Long mediaId) {
+        if (mediaId == null) {
+            return null;
+        }
+
+        return mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new RuntimeException("Media not found with id: " + mediaId));
     }
 }

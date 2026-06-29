@@ -2,6 +2,10 @@ package com.rawlynrogers.rawlynrogerswebsite.service;
 
 import com.rawlynrogers.rawlynrogerswebsite.dto.MediaDTO;
 import com.rawlynrogers.rawlynrogerswebsite.entity.Media;
+import com.rawlynrogers.rawlynrogerswebsite.entity.Contact;
+import com.rawlynrogers.rawlynrogerswebsite.entity.Project;
+import com.rawlynrogers.rawlynrogerswebsite.repository.ContactRepository;
+import com.rawlynrogers.rawlynrogerswebsite.repository.ProjectRepository;
 import com.rawlynrogers.rawlynrogerswebsite.repository.MediaRepository;
 
 import org.springframework.stereotype.Service;
@@ -17,10 +21,16 @@ import java.nio.file.Paths;
 @Service
 public class MediaServiceImpl implements MediaService {
 
+    private final ContactRepository contactRepository;
+    private final ProjectRepository projectRepository;
     private final MediaRepository mediaRepository;
 
-    public MediaServiceImpl(MediaRepository mediaRepository) {
+    public MediaServiceImpl(MediaRepository mediaRepository,
+                            ContactRepository contactRepository,
+                            ProjectRepository projectRepository) {
         this.mediaRepository = mediaRepository;
+        this.contactRepository = contactRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -74,6 +84,37 @@ public class MediaServiceImpl implements MediaService {
     public void deleteMedia(Long id) {
         Media media = mediaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Media not found."));
+
+        List<Contact> contacts = contactRepository.findAll();
+
+        for (Contact contact : contacts) {
+            if (contact.getProfileImage() != null &&
+                    contact.getProfileImage().getId().equals(id)) {
+                contact.setProfileImage(null);
+            }
+
+            if (contact.getResumePdf() != null &&
+                    contact.getResumePdf().getId().equals(id)) {
+                contact.setResumePdf(null);
+            }
+
+            if (contact.getCvPdf() != null &&
+                    contact.getCvPdf().getId().equals(id)) {
+                contact.setCvPdf(null);
+            }
+
+            contact.getSlideshow().remove(media);
+        }
+
+        contactRepository.saveAll(contacts);
+
+        List<Project> projects = projectRepository.findAll();
+
+        for (Project project : projects) {
+            project.getSlideshow().remove(media);
+        }
+
+        projectRepository.saveAll(projects);
 
         try {
             String fileName = media.getFilePath().replace("/uploads/", "");

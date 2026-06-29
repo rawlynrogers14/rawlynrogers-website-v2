@@ -1,6 +1,8 @@
 package com.rawlynrogers.rawlynrogerswebsite.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -21,6 +23,22 @@ public class Project {
     private String githubLink;
 
     private String projectDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_contributors",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    private List<Contact> contributors = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_slideshow_media",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id")
+    )
+    private List<Media> slideshow = new ArrayList<>();
 
     public Project() {
     }
@@ -67,5 +85,21 @@ public class Project {
 
     public void setProjectDate(String projectDate) {
         this.projectDate = projectDate;
+    }
+
+    public List<Contact> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<Contact> contributors) {
+        this.contributors = contributors;
+    }
+
+    public List<Media> getSlideshow() {
+        return slideshow;
+    }
+
+    public void setSlideshow(List<Media> slideshow) {
+        this.slideshow = slideshow;
     }
 }
