@@ -27,6 +27,11 @@ public class AdminProfileController {
 
         return ResponseEntity.ok(profileService.updateProfile(id, profileDTO));
     }
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<ProfileDTO> activateProfile(@PathVariable Long id) {
+        System.out.println("Activate profile endpoint hit! ID = " + id);
+        return ResponseEntity.ok(profileService.activateProfile(id));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {

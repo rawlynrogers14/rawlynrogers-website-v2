@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { adminApi, uploadMedia } from "../api/adminApi";
 import EntityFormModal from "./EntityFormModal";
 
-export default function EntityManager({ entity }) {
+export default function EntityManager({ entity, refreshKey }) {
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -22,26 +22,39 @@ export default function EntityManager({ entity }) {
     setSelectedRecord(null);
     setIsCreating(false);
     loadRecords();
-  }, [entity]);
+  }, [entity, refreshKey]);
 
   async function handleSave(record, selectedFiles = {}) {
-    if (entity.uploadUrl && selectedFiles.upload) {
-      await uploadMedia(entity, selectedFiles.upload, record.description);
-    } else if (record.id) {
-      await adminApi.update(entity, record.id, record);
-    } else {
-      await adminApi.create(entity, record);
-    }
+    try {
+      setError("");
 
-    setSelectedRecord(null);
-    setIsCreating(false);
-    loadRecords();
+      if (entity.uploadUrl && selectedFiles.upload) {
+        await uploadMedia(entity, selectedFiles.upload, record.description);
+      } else if (record.id) {
+        await adminApi.update(entity, record.id, record);
+      } else {
+        await adminApi.create(entity, record);
+      }
+
+      setSelectedRecord(null);
+      setIsCreating(false);
+      loadRecords();
+    } catch (err) {
+      console.error(err);
+      setError(`Could not save ${entity.label}.`);
+    }
   }
 
   async function handleDelete(record) {
-    await adminApi.delete(entity, record.id);
-    setSelectedRecord(null);
-    loadRecords();
+    try {
+      setError("");
+      await adminApi.delete(entity, record.id);
+      setSelectedRecord(null);
+      loadRecords();
+    } catch (err) {
+      console.error(err);
+      setError(`Could not delete ${entity.label}.`);
+    }
   }
 
   return (

@@ -99,6 +99,25 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public ProfileDTO activateProfile(Long id) {
+        List<Profile> profiles = profileRepository.findAll();
+
+        for (Profile profile : profiles) {
+            profile.setActive(false);
+        }
+
+        Profile selectedProfile = profileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found with id: " + id));
+
+        selectedProfile.setActive(true);
+
+        profileRepository.saveAll(profiles);
+        Profile savedProfile = profileRepository.save(selectedProfile);
+
+        return convertToDTO(savedProfile);
+    }
+
+    @Override
     public void deleteProfile(Long id) {
 
         Profile existingProfile = profileRepository.findById(id)

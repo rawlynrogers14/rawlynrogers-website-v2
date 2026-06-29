@@ -83,8 +83,15 @@ export const adminApi = {
       body: JSON.stringify(record),
     }),
 
+  activateProfile: (profileId) =>
+    request(`/api/admin/profiles/${profileId}/activate`, {
+       method: "PUT",
+    }),
+
   delete: (entity, id) =>
     request(`${entity.adminUrl}/${id}`, {
       method: "DELETE",
     }),
+
+
 };

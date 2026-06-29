@@ -408,3 +408,87 @@
   color: #b91c1c;
   font-weight: 600;
 }
+
+.relationship-picker {
+  width: 100%;
+}
+
+.relationship-picker-title {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.relationship-picker-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.relationship-picker-box {
+  min-height: 180px;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+
+.relationship-picker-box h4 {
+  margin: 0 0 0.75rem;
+  color: var(--color-primary);
+}
+
+.relationship-item {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.relationship-item:hover {
+  border-color: var(--color-secondary);
+}
+
+.relationship-item.selected {
+  font-weight: 700;
+}
+
+.admin-top-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-active-profile-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.admin-active-profile-select select {
+  min-width: 220px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.admin-success {
+  margin: 1rem 2rem 0;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(22, 163, 74, 0.08);
+  color: #15803d;
+  font-weight: 600;
+}

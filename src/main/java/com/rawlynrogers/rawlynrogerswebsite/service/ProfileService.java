@@ -16,5 +16,7 @@ public interface ProfileService {
 
     ProfileDTO updateProfile(Long id, ProfileDTO profileDTO);
 
+    ProfileDTO activateProfile(Long id);
+
     void deleteProfile(Long id);
 }

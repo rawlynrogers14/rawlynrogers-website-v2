@@ -1,4 +1,31 @@
 export const adminEntities = {
+  profiles: {
+    label: "Profiles",
+    listUrl: "/api/profiles",
+    adminUrl: "/api/admin/profiles",
+    displayField: "name",
+    fields: [
+      { name: "name", label: "Profile Name", type: "text", required: true },
+
+      {
+        name: "contact",
+        label: "Contact",
+        type: "entity-select",
+        source: "contacts",
+        displayField: "email",
+      },
+
+      {
+        name: "projects",
+        label: "Projects",
+        type: "entity-multiselect",
+        source: "projects",
+        displayField: "title",
+        payloadName: "projectIds",
+      },
+    ],
+  },
+
   projects: {
     label: "Projects",
     listUrl: "/api/projects",
@@ -10,11 +37,29 @@ export const adminEntities = {
       { name: "technologies", label: "Technologies", type: "textarea" },
       { name: "githubLink", label: "GitHub Link", type: "url" },
       { name: "projectDate", label: "Project Date", type: "text" },
+
+      {
+        name: "contributors",
+        label: "Contributors",
+        type: "entity-multiselect",
+        source: "contacts",
+        displayField: "email",
+        payloadName: "contributorIds",
+      },
+
+      {
+        name: "slideshow",
+        label: "Project Slideshow",
+        type: "entity-multiselect",
+        source: "media",
+        displayField: "fileName",
+        payloadName: "slideshowIds",
+      },
     ],
   },
 
   contacts: {
-    label: "Contact",
+    label: "Contacts",
     listUrl: "/api/contacts",
     adminUrl: "/api/admin/contacts",
     displayField: "email",
@@ -25,9 +70,39 @@ export const adminEntities = {
       { name: "email", label: "Email", type: "email" },
       { name: "githubLink", label: "GitHub Link", type: "url" },
       { name: "linkedinLink", label: "LinkedIn Link", type: "url" },
-      { name: "profileImageUrl", label: "Profile Image URL", type: "url" },
-      { name: "resumePdfUrl", label: "Resume PDF URL", type: "url" },
-      { name: "cvPdfUrl", label: "CV PDF URL", type: "url" },
+
+      {
+        name: "profileImage",
+        label: "Profile Image",
+        type: "entity-select",
+        source: "media",
+        displayField: "fileName",
+      },
+
+      {
+        name: "resumePdf",
+        label: "Resume PDF",
+        type: "entity-select",
+        source: "media",
+        displayField: "fileName",
+      },
+
+      {
+        name: "cvPdf",
+        label: "CV PDF",
+        type: "entity-select",
+        source: "media",
+        displayField: "fileName",
+      },
+
+      {
+        name: "slideshow",
+        label: "Contact Slideshow",
+        type: "entity-multiselect",
+        source: "media",
+        displayField: "fileName",
+      },
+
       { name: "aboutMe", label: "About Me", type: "textarea" },
     ],
   },
@@ -40,17 +115,21 @@ export const adminEntities = {
     displayField: "fileName",
     fields: [
       { name: "fileName", label: "File Name", type: "text", required: true },
+      { name: "description", label: "Description", type: "textarea" },
 
-      {name: "fileType", label: "File Type", type: "select", required: true, options:
-        [
-          { label: "Image", value: "image/jpeg" },
-          { label: "PDF", value: "application/pdf" },
-        ],
+      {
+        name: "fileType",
+        label: "File Type",
+        type: "display",
       },
 
-      { name: "upload", label: "Upload File", type: "file" },
-      { name: "description", label: "Description", type: "textarea" },
-      { name: "uploadedAt", label: "Uploaded At", type: "datetime-local", readOnly: true },
+      {
+        name: "uploadedAt",
+        label: "Uploaded At",
+        type: "display",
+      },
+
+      { name: "upload", label: "Upload File", type: "file", createOnly: true },
     ],
   },
 };
