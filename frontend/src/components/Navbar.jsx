@@ -1,34 +1,40 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getContact } from "../api/contactApi";
+import { getContactById } from "../api/contactApi";
+import { getActiveProfile } from "../api/profileApi";
 import "./Navbar.css";
 
 function Navbar() {
+  const [profile, setProfile] = useState(null);
   const [contact, setContact] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getContact()
-      .then((data) => {
-        console.log("Contact stored in state:", data);
-        setContact(data);
-      })
-      .catch((err) => {
-        console.error("Contact API failed:", err);
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    async function loadNavbarData() {
+      try {
+        const activeProfile = await getActiveProfile();
+        setProfile(activeProfile);
+
+        if (activeProfile?.contactId) {
+          const profileContact = await getContactById(activeProfile.contactId);
+          setContact(profileContact);
+        }
+      } catch (err) {
+        console.error("Navbar data failed to load:", err);
+      }
+    }
+
+    loadNavbarData();
   }, []);
+
+  const brandName =
+    contact?.firstName && contact?.lastName
+      ? `${contact.firstName} ${contact.lastName}`
+      : profile?.name || "Rawlyn Rogers";
 
   return (
     <nav className="navbar">
       <Link to="/" className="navbar-brand">
-        {contact
-          ? `${contact.firstName} ${contact.lastName}`
-          : "Rawlyn Rogers"}
+        {brandName}
       </Link>
 
       <div className="nav-links">
@@ -38,22 +44,18 @@ function Navbar() {
       </div>
 
       <div className="contact-buttons">
-        {loading && <span>Loading contact...</span>}
+        {contact?.email && <a href={`mailto:${contact.email}`}>Email Me</a>}
 
-        {error && <span>Contact failed to load</span>}
+        {contact?.linkedinLink && (
+          <a href={contact.linkedinLink} target="_blank" rel="noreferrer">
+            LinkedIn
+          </a>
+        )}
 
-        {!loading && !error && contact && (
-          <>
-            <a href={`mailto:${contact.email}`}>Email Me</a>
-
-            <a href={contact.linkedinLink} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-
-            <a href={contact.githubLink} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-          </>
+        {contact?.githubLink && (
+          <a href={contact.githubLink} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
         )}
       </div>
     </nav>

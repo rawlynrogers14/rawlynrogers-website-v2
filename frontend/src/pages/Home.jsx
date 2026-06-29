@@ -1,18 +1,51 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getContact } from "../api/contactApi";
+import { getContactById } from "../api/contactApi";
+import { getActiveProfile } from "../api/profileApi";
+import { getMediaById } from "../api/mediaApi";
+import ImageCarousel from "../components/ImageCarousel";
 import "./Home.css";
 
 function Home() {
   const [contact, setContact] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState(null);
+  const [slideshowImages, setSlideshowImages] = useState([]);
 
   useEffect(() => {
-    getContact()
-      .then((data) => setContact(data))
-      .catch((error) => console.error("Failed to load contact:", error))
-      .finally(() => setLoading(false));
+    async function loadHomeData() {
+      try {
+        const activeProfile = await getActiveProfile();
+
+        if (activeProfile?.contactId) {
+          const profileContact = await getContactById(activeProfile.contactId);
+          setContact(profileContact);
+
+          if (profileContact?.profileImageId) {
+            const image = await getMediaById(profileContact.profileImageId);
+            setProfileImage(image);
+          }
+          if (profileContact?.slideshowIds?.length > 0) {
+            const slideshowMedia = await Promise.all(
+              profileContact.slideshowIds.map((mediaId) => getMediaById(mediaId))
+            );
+
+            const imageMedia = slideshowMedia.filter((media) =>
+              media.fileType?.startsWith("image/")
+            );
+
+            setSlideshowImages(imageMedia);
+          }
+
+        }
+      } catch (error) {
+        console.error("Failed to load home data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadHomeData();
   }, []);
+
 
   if (loading) {
     return (
@@ -25,26 +58,27 @@ function Home() {
   return (
     <section className="page home-container">
       <div className="about-section">
-        {contact?.profileImageUrl && (
+        {profileImage?.filePath && (
           <img
-            src={`http://localhost:8080${contact.profileImageUrl}`}
-            alt={`${contact.firstName} ${contact.lastName}`}
+            src={`http://localhost:8080${profileImage.filePath}`}
+            alt={`${contact.firstName || ""} ${contact.lastName || ""}`}
             className="profile-image"
           />
         )}
 
-        <div className="about-content">
-          <h1>About Me</h1>
-          <p>{contact?.aboutMe}</p>
-        </div>
+        {contact?.aboutMe && (
+          <div className="about-content">
+            <h1>About Me</h1>
+            <p>{contact.aboutMe}</p>
+          </div>
+        )}
       </div>
 
-      <div className="slideshow-section">
-
-        <div className="slideshow-placeholder">
-          Future slideshow component
+      {slideshowImages.length > 0 && (
+        <div className="slideshow-section">
+          <ImageCarousel images={slideshowImages} />
         </div>
-      </div>
+      )}
     </section>
   );
 }

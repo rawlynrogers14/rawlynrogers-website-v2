@@ -114,21 +114,26 @@ export const adminEntities = {
     uploadUrl: "/api/admin/media/upload",
     displayField: "fileName",
     fields: [
-      { name: "fileName", label: "File Name", type: "text", required: true },
-      { name: "description", label: "Description", type: "textarea" },
-
+      {
+        name: "fileName",
+        label: "File Name",
+        type: "display",
+      },
+      {
+        name: "description",
+        label: "Description",
+        type: "textarea",
+      },
       {
         name: "fileType",
         label: "File Type",
         type: "display",
       },
-
       {
         name: "uploadedAt",
         label: "Uploaded At",
         type: "display",
       },
-
       { name: "upload", label: "Upload File", type: "file", createOnly: true },
     ],
   },

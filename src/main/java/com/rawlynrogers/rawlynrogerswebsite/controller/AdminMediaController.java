@@ -24,6 +24,14 @@ public class AdminMediaController {
         return ResponseEntity.ok(mediaService.uploadMedia(file, description));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<MediaDTO> updateMedia(
+            @PathVariable Long id,
+            @RequestBody MediaDTO mediaDTO) {
+
+        return ResponseEntity.ok(mediaService.updateMedia(id, mediaDTO));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
         mediaService.deleteMedia(id);

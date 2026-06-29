@@ -42,6 +42,14 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public MediaDTO getMediaById(Long id) {
+        Media media = mediaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
+
+        return convertToDTO(media);
+    }
+
+    @Override
     public MediaDTO uploadMedia(MultipartFile file, String description) {
         try {
             String fileName = file.getOriginalFilename();
@@ -79,6 +87,19 @@ public class MediaServiceImpl implements MediaService {
             throw new RuntimeException("Could not save uploaded file: " + e.getMessage());
         }
     }
+
+    @Override
+    public MediaDTO updateMedia(Long id, MediaDTO mediaDTO) {
+        Media existingMedia = mediaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Media not found with id: " + id));
+
+        existingMedia.setDescription(mediaDTO.getDescription());
+
+        Media savedMedia = mediaRepository.save(existingMedia);
+
+        return convertToDTO(savedMedia);
+    }
+
 
     @Override
     public void deleteMedia(Long id) {

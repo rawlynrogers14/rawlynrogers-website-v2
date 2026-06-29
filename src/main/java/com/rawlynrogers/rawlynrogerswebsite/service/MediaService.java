@@ -9,7 +9,11 @@ public interface MediaService {
 
     List<MediaDTO> getAllMedia();
 
+    MediaDTO getMediaById(Long id);
+
     MediaDTO uploadMedia(MultipartFile file, String description);
+
+    MediaDTO updateMedia(Long id, MediaDTO mediaDTO);
 
     void deleteMedia(Long id);
 

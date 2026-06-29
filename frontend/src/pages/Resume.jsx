@@ -1,76 +1,79 @@
 import { useEffect, useState } from "react";
-import { getContact } from "../api/contactApi";
+import { getContactById } from "../api/contactApi";
+import { getActiveProfile } from "../api/profileApi";
+import { getMediaById } from "../api/mediaApi";
 import "./Resume.css";
 
 function Resume() {
-  const [contact, setContact] = useState(null);
+  const [resumePdf, setResumePdf] = useState(null);
+  const [cvPdf, setCvPdf] = useState(null);
   const backendUrl = "http://localhost:8080";
 
   useEffect(() => {
-    getContact()
-      .then((data) => setContact(data))
-      .catch((error) => console.error("Failed to load resume links:", error));
+    async function loadResumeData() {
+      try {
+        const activeProfile = await getActiveProfile();
+
+        if (activeProfile?.contactId) {
+          const contact = await getContactById(activeProfile.contactId);
+
+          if (contact?.resumePdfId) {
+            const resume = await getMediaById(contact.resumePdfId);
+            setResumePdf(resume);
+          }
+
+          if (contact?.cvPdfId) {
+            const cv = await getMediaById(contact.cvPdfId);
+            setCvPdf(cv);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load resume links:", error);
+      }
+    }
+
+    loadResumeData();
   }, []);
-
-  const resumeUrl = contact?.resumePdfUrl
-    ? `${backendUrl}${contact.resumePdfUrl}`
-    : "";
-
-  const cvUrl = contact?.cvPdfUrl
-    ? `${backendUrl}${contact.cvPdfUrl}`
-    : "";
 
   return (
     <section className="page resume-container">
       <div className="resume-header">
         <h1>Resume & CV</h1>
-        <p>
-          Computer Engineering graduate, U.S. Army veteran, and Security+
-          certified professional with experience in software development,
-          backend systems, networking, cybersecurity, and full-stack web
-          applications.
-        </p>
       </div>
 
-      <div className="resume-card">
-        <h2>Professional Resume</h2>
-        <p>
-          A concise, recruiter-friendly resume focused on my technical skills,
-          education, military IT experience, software projects, and professional
-          qualifications.
-        </p>
+      {resumePdf?.filePath && (
+        <div className="resume-card">
+          <h2>Professional Resume</h2>
 
-        {resumeUrl && (
+          {resumePdf.description && <p>{resumePdf.description}</p>}
+
           <a
-            href={resumeUrl}
+            href={`${backendUrl}${resumePdf.filePath}`}
             className="download-button"
             target="_blank"
             rel="noreferrer"
           >
             Open Resume
           </a>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="resume-card">
-        <h2>Curriculum Vitae</h2>
-        <p>
-          A longer-form CV with expanded details on my education, projects,
-          certifications, military experience, technical skills, and
-          accomplishments.
-        </p>
+      {cvPdf?.filePath && (
+        <div className="resume-card">
+          <h2>Curriculum Vitae</h2>
 
-        {cvUrl && (
+          {cvPdf.description && <p>{cvPdf.description}</p>}
+
           <a
-            href={cvUrl}
+            href={`${backendUrl}${cvPdf.filePath}`}
             className="download-button"
             target="_blank"
             rel="noreferrer"
           >
             Open CV
           </a>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

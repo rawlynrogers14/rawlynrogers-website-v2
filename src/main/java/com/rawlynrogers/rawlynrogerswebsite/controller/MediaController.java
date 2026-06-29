@@ -24,4 +24,9 @@ public class MediaController {
         return ResponseEntity.ok(mediaService.getAllMedia());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
+        return ResponseEntity.ok(mediaService.getMediaById(id));
+    }
+
 }
