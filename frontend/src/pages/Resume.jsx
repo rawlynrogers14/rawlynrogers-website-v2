@@ -10,6 +10,10 @@ function Resume() {
   const backendUrl = "http://localhost:8080";
 
   useEffect(() => {
+    document.title = "Resume";
+  }, []);
+
+  useEffect(() => {
     async function loadResumeData() {
       try {
         const activeProfile = await getActiveProfile();
