@@ -100,6 +100,7 @@ function Projects() {
                     <h3>GitHub</h3>
                     <a
                       href={project.githubLink}
+                      className="project-button"
                       target="_blank"
                       rel="noreferrer"
                     >
