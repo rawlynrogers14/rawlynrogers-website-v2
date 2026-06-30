@@ -42,7 +42,7 @@ function Resume() {
   return (
     <section className="page resume-container">
       <div className="resume-header">
-        <h1>Resume & CV</h1>
+        <h1>Resume</h1>
       </div>
 
       {resumePdf?.filePath && (
