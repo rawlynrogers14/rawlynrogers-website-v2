@@ -7,7 +7,7 @@ public class ProfileDTO {
 
     private Long id;
     private String name;
-    private boolean active;
+    private Boolean active = false;
 
     private Long contactId;
 
@@ -18,13 +18,13 @@ public class ProfileDTO {
 
     public ProfileDTO(Long id,
                       String name,
-                      boolean active,
+                      Boolean active,
                       Long contactId,
                       List<Long> projectIds) {
 
         this.id = id;
         this.name = name;
-        this.active = active;
+        this.active = active != null ? active : false;
         this.contactId = contactId;
         this.projectIds = projectIds;
     }
@@ -46,11 +46,11 @@ public class ProfileDTO {
     }
 
     public boolean isActive() {
-        return active;
+        return Boolean.TRUE.equals(active);
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(Boolean active) {
+        this.active = active != null ? active : false;
     }
 
     public Long getContactId() {
