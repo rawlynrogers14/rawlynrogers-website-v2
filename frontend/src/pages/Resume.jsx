@@ -7,7 +7,7 @@ import "./Resume.css";
 function Resume() {
   const [resumePdf, setResumePdf] = useState(null);
   const [cvPdf, setCvPdf] = useState(null);
-  const backendUrl = "http://localhost:8080";
+  const backendUrl = "";
 
   useEffect(() => {
     document.title = "Resume";

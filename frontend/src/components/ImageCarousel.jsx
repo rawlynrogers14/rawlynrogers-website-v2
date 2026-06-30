@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ImageCarousel.css";
 
-const BACKEND_URL = "http://localhost:8080";
+const BACKEND_URL = "";
 
 export default function ImageCarousel({ images = [] }) {
   const [currentIndex, setCurrentIndex] = useState(0);

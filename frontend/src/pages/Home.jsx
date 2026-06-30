@@ -65,7 +65,7 @@ function Home() {
       <div className="about-section">
         {profileImage?.filePath && (
           <img
-            src={`http://localhost:8080${profileImage.filePath}`}
+            src={profileImage.filePath}
             alt={`${contact.firstName || ""} ${contact.lastName || ""}`}
             className="profile-image"
           />
