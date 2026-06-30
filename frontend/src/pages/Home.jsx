@@ -11,6 +11,12 @@ function Home() {
   const [profileImage, setProfileImage] = useState(null);
   const [slideshowImages, setSlideshowImages] = useState([]);
 
+  import { useEffect } from "react";
+
+  useEffect(() => {
+    document.title = "Home";
+  }, []);
+
   useEffect(() => {
     async function loadHomeData() {
       try {
@@ -45,6 +51,7 @@ function Home() {
     }
     loadHomeData();
   }, []);
+
 
 
   if (loading) {

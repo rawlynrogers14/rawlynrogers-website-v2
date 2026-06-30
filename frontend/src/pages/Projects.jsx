@@ -11,6 +11,10 @@ function Projects() {
   const [openProjectId, setOpenProjectId] = useState(null);
 
   useEffect(() => {
+    document.title = "Projects";
+  }, []);
+
+  useEffect(() => {
     async function loadProfileProjects() {
       try {
         const activeProfile = await getActiveProfile();
