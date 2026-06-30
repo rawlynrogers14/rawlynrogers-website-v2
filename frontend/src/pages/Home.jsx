@@ -74,7 +74,7 @@ function Home() {
         {contact?.aboutMe && (
           <div className="about-content">
             <h1>About Me</h1>
-            <p>{contact.aboutMe}</p>
+            <p className="about-text">{contact.aboutMe}</p>
           </div>
         )}
       </div>
